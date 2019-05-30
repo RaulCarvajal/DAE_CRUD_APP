@@ -23,13 +23,13 @@
           <div class="col">
             <div class="form-group">
               <label for="name">Name</label>
-              <input type="text" class="form-control" id="name" placeholder="Name">
+              <input type="text" class="form-control" id="name" placeholder="Name" [(ngModel)]="name" [ngModelOptions]="{standalone: true}">
             </div>
           </div>
           <div class="col">        
             <div class="form-group">
               <label for="Lastname">Lastname</label>
-              <input type="text" class="form-control" id="Lastname" placeholder="Lastname">
+              <input type="text" class="form-control" id="Lastname" placeholder="Lastname" [(ngModel)]="lastname" [ngModelOptions]="{standalone: true}">
             </div>
           </div>
         </div>
@@ -37,17 +37,18 @@
           <div class="col">
             <div class="form-group">
               <label for="control">Control number</label>
-              <input type="text" class="form-control" id="control" placeholder="Control number">
+              <input type="text" class="form-control" id="control" placeholder="Control number" [(ngModel)]="control" [ngModelOptions]="{standalone: true}">
             </div>
           </div>
           <div class="col">
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" class="form-control" id="email" placeholder="Email">
+              <input type="email" class="form-control" id="email" placeholder="Email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}">
             </div>
           </div>
         </div>
-        <button class="btn btn-primary" type="button">Save</button>
+        <button class="btn btn-primary" type="button" *ngIf="!flag" (click)="formSave()">Save</button>
+        <button class="btn btn-primary" type="button" *ngIf="flag" (click)="upd()">Update</button>
       </form>
     </div>
   </div>
@@ -62,6 +63,7 @@
             <th scope="col">Control</th>
             <th scope="col">Email</th>
             <th scope="col"></th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
@@ -72,6 +74,9 @@
             <td>{{reg.email}}</td>
             <td>
               <button class="btn btn-danger" (click)="del(reg._id)">Delete</button>
+            </td>
+            <td>
+              <button class="btn btn-primary" (click)="load(reg._id)">Update</button>
             </td>
           </tr>
         </tbody>

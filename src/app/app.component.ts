@@ -12,19 +12,35 @@ export class AppComponent {
     this.getAll();
   }
 
-  regs:any[];
+  regs:JSON[];
+  name:string;
+  lastname:string;
+  email:string;
+  control:string;
+
+  pupd:person;
+
+  flag:boolean=true;
+
+  idupd:string="";
 
   getAll(){
     this.crudService.get().subscribe(
       res=>{
-        this.regs=res;
+        this.regs=res.detail;
       },err=>{
         console.log(err);
       }
     );
   }
-  formSave(n:JSON){
-    this.crudService.create(n).subscribe(
+  formSave(){
+    let np:any={
+      'name':this.name,
+      'lastname':this.lastname,
+      'email':this.email,
+      'nc':this.control
+    };
+    this.crudService.create(np).subscribe(
       res=>{
         this.getAll();
       },err=>{
@@ -41,4 +57,43 @@ export class AppComponent {
       }
     );
   }
+  load(id:string){
+    this.crudService.getbyid(id).subscribe(
+      res=>{
+        this.pupd=res.detail;
+        this.idupd=this.pupd._id;
+        this.name=this.pupd.name;
+        this.lastname=this.pupd.lastname;
+        this.control=this.pupd.nc;
+        this.email=this.pupd.email;
+        this.flag=true;
+      },err=>{
+        console.log(err);
+      }
+    );
+  }
+  upd(){
+    let np:any={
+      'name':this.name,
+      'lastname':this.lastname,
+      'email':this.email,
+      'nc':this.control
+    };
+    this.crudService.update(this.idupd,np).subscribe(
+      res=>{
+        this.getAll();
+        this.flag=false;
+      },err=>{
+        console.log(err);
+      }
+    );
+  }
+}
+
+export interface person{
+  "_id":string,
+  "name":string,
+  "lastname":string,
+  "nc":string,
+  "email":string
 }
